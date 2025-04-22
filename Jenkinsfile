@@ -1,60 +1,25 @@
 pipeline {
     agent any
-    
-    environment {
-        PYTHON = 'python3'
-        VENV_PATH = 'venv'
-    }
-    
+
     stages {
-        stage('Setup') {
+        stage('Checkout') {
             steps {
-                sh '${PYTHON} -m venv ${VENV_PATH}'
-                sh '. ${VENV_PATH}/bin/activate && pip install -r requirements.txt'
+                git 'https://github.com/sneako444/VotingSystem.git'
             }
         }
-        
-        stage('Test') {
-            steps {
-                sh '. ${VENV_PATH}/bin/activate && python manage.py test'
-            }
-        }
-        
-        stage('Selenium Tests') {
+
+        stage('Build Docker Image') {
             steps {
                 script {
-                    try {
-                        // Start Django server in background
-                        sh '. ${VENV_PATH}/bin/activate && python manage.py migrate'
-                        sh '. ${VENV_PATH}/bin/activate && python manage.py runserver &'
-                        
-                        // Give server time to start
-                        sleep 10
-                        
-                        // Run Selenium tests
-                        sh '. ${VENV_PATH}/bin/activate && python manage.py test tests.test_selenium'
-                    } finally {
-                        // Stop Django server
-                        sh 'pkill -f "python manage.py runserver" || true'
-                    }
+                    docker.build('online-voting-app')
                 }
             }
         }
-        
-        stage('Deploy') {
-            when {
-                branch 'main'
-            }
+
+        stage('Run Tests') {
             steps {
-                sh '. ${VENV_PATH}/bin/activate && python manage.py collectstatic --noinput'
-                // Add your deployment steps here
+                sh 'python manage.py test'
             }
-        }
-    }
-    
-    post {
-        always {
-            cleanWs()
         }
     }
 }
