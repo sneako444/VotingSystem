@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Election Results</h2>
+    
+    {% if not results %}
+        <div class="alert alert-info">
+            No results available yet.
+        </div>
+    {% else %}
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Rank</th>
+                    <th>Candidate</th>
+                    <th>Votes</th>
+                    <th>Percentage</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ result.candidate.title }} {{ result.candidate.name }}</td>
+                    <td>{{ result.votes_count }}</td>
+                    <td>
+                        <div class="progress" style="height: 25px;">
+                            {% widthratio result.votes_count total_votes 100 as percentage %}
+                            <div class="progress-bar" 
+                                 style="width: {{ percentage }}%">
+                                {{ percentage }}%
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+{% endblock %}

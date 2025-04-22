@@ -1,0 +1,23 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <h1 class="display-4 mb-4">Welcome to Online Voting System</h1>
+        <p class="lead">Cast your vote securely and conveniently from anywhere</p>
+        
+        {% if not user.is_authenticated %}
+            <div class="mt-5">
+                <a href="{% url 'register' %}" class="btn btn-primary btn-lg me-3">Register</a>
+                <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg">Login</a>
+            </div>
+        {% else %}
+            <div class="mt-5">
+                <a href="{% url 'vote' %}" class="btn btn-primary btn-lg me-3">Vote Now</a>
+                <a href="{% url 'results' %}" class="btn btn-outline-primary btn-lg">View Results</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

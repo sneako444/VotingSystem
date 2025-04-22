@@ -1,0 +1,43 @@
+<!-- templates/vote.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4">Cast Your Vote</h2>
+        {% if not candidates %}
+            <div class="alert alert-info">
+                No candidates available for voting at this time.
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row">
+    {% for candidate in candidates %}
+    <div class="col-md-4">
+        <div class="card">
+            <img src="{{ candidate.photo.url }}" class="card-img-top candidate-img" alt="{{ candidate.name }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ candidate.title }} {{ candidate.name }}</h5>
+                <p class="card-text">{{ candidate.description }}</p>
+                
+                {% if candidate.id in user_votes %}
+                    <button class="btn btn-success vote-btn" disabled>
+                        <i class="fas fa-check-circle me-2"></i>Voted
+                    </button>
+                {% else %}
+                    <form method="POST" action="{% url 'vote' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="candidate" value="{{ candidate.id }}">
+                        <button type="submit" class="btn btn-primary vote-btn">
+                            <i class="fas fa-vote-yea me-2"></i>Vote Now
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+/* Admin Dashboard Styles */
+.dashboard-card {
+    border-left: 0.25rem solid;
+    border-radius: 0.35rem;
+    transition: all 0.3s;
+  }
+  
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+  
+  .dashboard-card .card-body {
+    padding: 1.25rem;
+  }
+  
+  .dashboard-card .card-title {
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--secondary);
+  }
+  
+  .dashboard-card .card-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--dark);
+  }
+  
+  /* Color Variants */
+  .card-primary {
+    border-left-color: var(--primary);
+  }
+  
+  .card-success {
+    border-left-color: var(--success);
+  }
+  
+  .card-info {
+    border-left-color: var(--info);
+  }
